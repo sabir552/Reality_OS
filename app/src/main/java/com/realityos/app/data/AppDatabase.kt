@@ -44,3 +44,38 @@ abstract class AppDatabase : RoomDatabase() {
             requireNotNull(INSTANCE) { "AppDatabase not initialized" }
     }
 }
+// entities
+package com.realityos.app.data.entities
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.realityos.app.domain.CommitEventType
+import com.realityos.app.domain.CommitLevel
+import com.realityos.app.domain.PunishmentType
+
+@Entity(tableName = "usage_events")
+data class UsageEventEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val packageName: String,
+    val dayEpoch: Long,
+    val totalMillis: Long
+)
+
+@Entity(tableName = "rules")
+data class RuleEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val targetPackage: String,
+    val dailyLimitMinutes: Int,
+    val punishmentType: PunishmentType,
+    val active: Boolean,
+    val level: CommitLevel
+)
+
+@Entity(tableName = "commit_events")
+data class CommitEventEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val timestamp: Long,
+    val type: CommitEventType,
+    val level: CommitLevel,
+    val detail: String
+)
