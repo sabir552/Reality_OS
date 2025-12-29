@@ -1,0 +1,7 @@
+<!-- app/src/main/res/values/strings.xml -->
+<resources>
+    <string name="app_name">Reality OS</string>
+    <string name="accessibility_description">
+        Reality OS monitors your foreground apps to enforce your own rules.
+    </string>
+</resources>
