@@ -79,3 +79,37 @@ data class CommitEventEntity(
     val level: CommitLevel,
     val detail: String
 )
+// daos
+package com.realityos.app.data.dao
+
+import androidx.room.*
+import com.realityos.app.data.entities.*
+
+@Dao
+interface UsageDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsert(event: UsageEventEntity)
+
+    @Query("SELECT * FROM usage_events WHERE dayEpoch = :dayEpoch ORDER BY totalMillis DESC")
+    suspend fun getForDay(dayEpoch: Long): List<UsageEventEntity>
+}
+
+@Dao
+interface RuleDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(rule: RuleEntity): Long
+
+    @Update suspend fun update(rule: RuleEntity)
+
+    @Query("SELECT * FROM rules") suspend fun getAll(): List<RuleEntity>
+    @Query("SELECT * FROM rules WHERE active = 1") suspend fun getActive(): List<RuleEntity>
+}
+
+@Dao
+interface CommitEventDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(event: CommitEventEntity): Long
+
+    @Query("SELECT * FROM commit_events ORDER BY timestamp DESC LIMIT :limit")
+    suspend fun recent(limit: Int): List<CommitEventEntity>
+}
